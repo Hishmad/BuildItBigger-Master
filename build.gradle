@@ -22,7 +22,7 @@ task testOnAndOff{
     description 'Run the backend, test, and then shutdown the backend.'
     tasks.getByPath(":app:connectedCheck").mustRunAfter tasks.getByPath(":backend:appengineRun")
     tasks.getByPath(":backend:appengineStop").mustRunAfter tasks.getByPath(":app:connectedCheck")
-    tasks.getByPath("testOnAndOff").dependsOn(":app:connectedCheck")
+    tasks.getByPath("testOnAndOff").dependsOn(":app:connectedCheck", ":backend:appengineRun", ":backend:appengineStop")
 
 }
 
