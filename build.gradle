@@ -1,0 +1,36 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.2.3'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+task testOnAndOff{
+    description 'Run the backend, test, and then shutdown the backend.'
+    tasks.getByPath(":app:connectedCheck").mustRunAfter tasks.getByPath(":backend:appengineRun")
+    tasks.getByPath(":backend:appengineStop").mustRunAfter tasks.getByPath(":app:connectedCheck")
+    tasks.getByPath("testOnAndOff").dependsOn(":app:connectedCheck")
+
+}
+
+
+// task to install both free and paid debug version at the same time
+task installAllDebug {
+    description 'Install the paid and free debug version.'
+    tasks.getByPath(":app:installFreeDebug").mustRunAfter tasks.getByPath(":app:installPaidDebug")
+    tasks.getByPath("installAllDebug").dependsOn(":app:installFreeDebug", ":app:installPaidDebug")
+}
+
