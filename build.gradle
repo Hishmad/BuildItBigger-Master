@@ -18,19 +18,29 @@ allprojects {
     }
 }
 
-task testOnAndOff{
-    description 'Run the backend, test, and then shutdown the backend.'
-    tasks.getByPath(":app:connectedCheck").mustRunAfter tasks.getByPath(":backend:appengineRun")
-    tasks.getByPath(":backend:appengineStop").mustRunAfter tasks.getByPath(":app:connectedCheck")
-    tasks.getByPath("testOnAndOff").dependsOn(":app:connectedCheck", ":backend:appengineRun", ":backend:appengineStop")
 
+task startAppEngine (dependsOn: ":backend:appengineRun") {
+    project(":backend").afterEvaluate { backend ->
+        backend.extensions.appengine.daemon = true
+    }
+    doLast {
+        println "Server started!"
+    }
 }
 
-
-// task to install both free and paid debug version at the same time
-task installAllDebug {
-    description 'Install the paid and free debug version.'
-    tasks.getByPath(":app:installFreeDebug").mustRunAfter tasks.getByPath(":app:installPaidDebug")
-    tasks.getByPath("installAllDebug").dependsOn(":app:installFreeDebug", ":app:installPaidDebug")
+task startTest (dependsOn: ":backend:appengineFunctionalTest") {
+    doLast {
+        println "Testing completed!"
+    }
 }
 
+task stopAppEngine (dependsOn: ":backend:appengineStop") {
+    doLast {
+        println "Server stopped!"
+    }
+}
+
+task doItAll (dependsOn: ["startAppEngine", "startTest", "stopAppEngine"])
+
+startTest.mustRunAfter startAppEngine
+startTest.finalizedBy stopAppEngine
