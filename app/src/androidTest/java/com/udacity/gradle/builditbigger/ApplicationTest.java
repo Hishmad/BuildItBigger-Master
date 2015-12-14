@@ -29,6 +29,7 @@ public class ApplicationTest extends AndroidTestCase implements CallBackFromAsyn
         s = new EndpointAsyncTask();
         s.execute(new Pair<MainActivity, String>(activity, "hello"));
 
+
     }
 
     @Override

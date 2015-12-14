@@ -28,7 +28,7 @@ task startAppEngine (dependsOn: ":backend:appengineRun") {
     }
 }
 
-task startTest (dependsOn: ":backend:appengineFunctionalTest") {
+task startTest (dependsOn: ":app:connectedCheck") {
     doLast {
         println "Testing completed!"
     }

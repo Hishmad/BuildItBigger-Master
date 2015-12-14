@@ -25,10 +25,12 @@ android {
     productFlavors {
         free {
             applicationId "com.udacity.gradle.builditbigger"
+            versionCode 1
             versionName "1.0-free"
         }
         paid {
             applicationId "com.udacity.gradle.builditbigger"
+            versionCode 1
             versionName "1.0-paid"
         }
     }
